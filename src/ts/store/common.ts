@@ -3,6 +3,7 @@ import $ from 'jquery';
 import { I, Storage, UtilCommon, UtilObject, Renderer } from 'Lib';
 import { dbStore } from 'Store';
 import Constant from 'json/constant.json';
+import {is} from 'electron-util';
 
 interface Filter {
 	from: number;
@@ -51,6 +52,7 @@ class CommonStore {
 	public isSidebarFixedValue = null;
 	public showRelativeDatesValue = null;
 	public fullscreenObjectValue = null;
+	public vimModeIsOn = null;
 
 	public previewObj: I.Preview = { 
 		type: null, 
@@ -95,6 +97,7 @@ class CommonStore {
 			fullscreenObjectValue: observable,
 			spaceId: observable,
 			techSpaceId: observable,
+			vimModeIsOn: observable,
             config: computed,
             progress: computed,
             preview: computed,
@@ -119,6 +122,7 @@ class CommonStore {
 			spaceSet: action,
 			techSpaceSet: action,
 			spaceStorageSet: action,
+			vimModeSet: action,
 		});
 
 		intercept(this.configObj as any, change => UtilCommon.intercept(this.configObj, change));
@@ -180,6 +184,10 @@ class CommonStore {
 		return this.boolGet('fullscreenObject');
 	};
 
+	get vimObject(): boolean {
+		return this.boolGet('vimObject');
+	};
+
 	get theme(): string {
 		return String(this.themeId || '');
 	};
@@ -211,6 +219,10 @@ class CommonStore {
 
 	get showRelativeDates (): boolean {
 		return this.boolGet('showRelativeDates');
+	};
+
+	get vimMode (): boolean {
+		return this.config.vimMode || Constant.default.vimMode;
 	};
 
     gatewaySet (v: string) {
@@ -399,6 +411,10 @@ class CommonStore {
 
 	nativeThemeSet (isDark: boolean) {
 		this.nativeThemeIsDark = isDark;
+	};
+
+	vimModeSet (isVimOn: boolean) {
+		this.vimModeIsOn = isVimOn;
 	};
 
 	languagesSet (v: string[]) {

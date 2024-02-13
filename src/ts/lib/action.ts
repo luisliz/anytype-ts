@@ -1,6 +1,7 @@
 import { I, C, focus, analytics, Renderer, Preview, UtilCommon, UtilObject, Storage, UtilData, UtilRouter, UtilMenu, translate, Mapper } from 'Lib';
 import { commonStore, authStore, blockStore, detailStore, dbStore, popupStore, menuStore } from 'Store';
 import Constant from 'json/constant.json';
+import common from 'Lib/util/common';
 
 class Action {
 
@@ -580,6 +581,11 @@ class Action {
 	setInterfaceLang (id: string) {
 		Renderer.send('setInterfaceLang', id);
 		analytics.event('SwitchInterfaceLanguage', { type: id });
+	};
+
+	setVimMode(v: boolean) {
+		commonStore.vimModeSet(v);
+		analytics.event('SwitchVimMode', { type: v });
 	};
 
 	setSpellingLang (id: string) {

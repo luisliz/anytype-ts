@@ -32,6 +32,8 @@ import PageSpaceCreate from './page/settings/space/create';
 import PageSpaceStorageManager from './page/settings/space/storage';
 import PageSpaceShare from './page/settings/space/share';
 
+import PageKeybindingIndex from './page/settings/keybinding/index';
+
 interface State {
 	loading: boolean;
 };
@@ -49,6 +51,7 @@ const Components: any = {
 	pinSelect:			 PagePinSelect,
 	pinConfirm:			 PagePinConfirm,
 
+	keybinding:	         PageKeybindingIndex,
 
 	importIndex:		 PageImportIndex,
 	importNotion:		 PageImportNotion,
@@ -263,6 +266,7 @@ const PopupSettings = observer(class PopupSettings extends React.Component<I.Pop
 						{ id: 'personal', name: translate('popupSettingsPersonalTitle') },
 						{ id: 'appearance', name: translate('popupSettingsAppearanceTitle') },
 						{ id: 'pinIndex', name: translate('popupSettingsPinTitle'), icon: 'pin', subPages: [ 'pinSelect', 'pinConfirm' ] },
+						{ id: 'keybinding', name: translate('popupSettingsKeyBindingTitle') },
 					]
 				},
 				{ 

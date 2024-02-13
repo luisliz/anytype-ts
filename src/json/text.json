@@ -597,6 +597,7 @@
 	"popupSettingsPersonalDefaultObjectTypeSelect": "Select",
 	"popupSettingsPersonalSpellcheckLanguage": "Spellcheck Languages",
 	"popupSettingsPersonalInterfaceLanguage": "Interface Language",
+	"popupSettingsPersonalVimBindings": "Vim Bindings (only use if you are familiar with VIM)",
 
 	"popupSettingsAppearanceTitle": "Appearance",
 	"popupSettingsAppearanceColorMode": "Color mode",
@@ -627,6 +628,9 @@
 	"popupSettingsPhraseHideQR": "Hide QR-code",
 	"popupSettingsPhraseText": "Your Recovery phrase protects your account. You'll need it to sign in if you don't have access to your devices. Keep it in a safe place. Click to show:",
 	"popupSettingsPhraseBackup": "Back up Phrase",
+
+	"popupSettingsKeyBindingTitle": "Key Bindings",
+	"popupSettingsKeyBindingVimMode": "Use VIM Bindings",
 
 	"popupSettingsPinTitle": "Pin Code",
 	"popupSettingsPinText": "The Pin Code will protect your Recovery Phrase. As we do not store your Recovery Phrase or Pin Code and do not ask for your e-mail or phone number, it is impossible to recover your data without this information. So, please, remember or write it down somewhere in a safe place.",
@@ -1473,6 +1477,7 @@
 	"sidebarToggle": "Toggle sidebar fixed mode",
 	"unsplashString": "Photo by %s on %s",
 	"templateBannner": "You are editing a template",
+	"vimMode": "Vim mode is enabled",
 
 	"deletedBanner": "This file is in the Bin and is shown in view mode",
 	"deletedBannerRestore": "Restore",

@@ -51,6 +51,12 @@ const Sidebar = observer(class Sidebar extends React.Component<Props> {
             >
 				<div className="inner">
 					<div className="head" draggable={true} onDragStart={this.onDragStart}>
+						{commonStore.vimModeIsOn &&
+							<Icon
+								className="vim"
+								tooltip={translate('vimMode')}
+								tooltipY={I.MenuDirection.Bottom}
+							/> }
 						<Icon
 							className="toggle"
 							tooltip={translate('sidebarToggle')}

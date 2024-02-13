@@ -22,6 +22,7 @@ class ConfigManager {
 			this.config = data || {};
 			this.checkChannel();
 			this.checkTheme();
+			this.checkVimMode();
 
 			console.log('[ConfigManager].init:', this.config);
 
@@ -39,6 +40,7 @@ class ConfigManager {
 		this.config = Object.assign(this.config, obj);
 		this.checkChannel();
 		this.checkTheme();
+		this.checkVimMode();
 
 		console.log('[ConfigManager].set:', this.config);
 
@@ -51,6 +53,10 @@ class ConfigManager {
 
 	checkTheme () {
 		this.config.theme = (undefined !== this.config.theme) ? this.config.theme : 'system';
+	};
+
+	checkVimMode () {
+		this.config.vimMode = (undefined !== this.config.vimMode) ? this.config.vimMode: false;
 	};
 
 	checkChannel () {

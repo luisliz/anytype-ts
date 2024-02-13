@@ -25,10 +25,10 @@ const PopupSettingsPagePinSelect = observer(class PopupSettingsPagePinSelect ext
 			<div>
 				<Head onPage={this.onBack} name={translate('commonBack')} />
 				<Title text={translate(pin ? 'popupSettingsPinSelectRepeat' : 'popupSettingsPinSelect')} />
-				<Pin 
-					ref={ref => this.ref = ref} 
-					expectedPin={pin ? sha1(pin) : null} 
-					onSuccess={this.onSuccess} 
+				<Pin
+					ref={ref => this.ref = ref}
+					expectedPin={pin ? sha1(pin) : null}
+					onSuccess={this.onSuccess}
 					onError={this.onError}
 				/>
 				<Error text={error} />
@@ -37,7 +37,7 @@ const PopupSettingsPagePinSelect = observer(class PopupSettingsPagePinSelect ext
 	};
 
 	componentDidUpdate (): void {
-		this.ref.reset();	
+		this.ref.reset();
 	};
 
 	onSuccess = (pin: string) => {
@@ -47,7 +47,8 @@ const PopupSettingsPagePinSelect = observer(class PopupSettingsPagePinSelect ext
 		if (!prevPin) {
 			this.setState({ pin });
 			return;
-		};
+		}
+        ;
 
 		Storage.set('pin', sha1(pin));
 		onPage('pinIndex');

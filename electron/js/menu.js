@@ -359,7 +359,7 @@ class MenuManager {
 			},
 
 			{ label: Util.translate('electronMenuLanguage'), submenu: langMenu },
-			
+
 			Separator,
 
 			{ 

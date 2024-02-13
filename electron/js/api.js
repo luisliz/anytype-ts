@@ -193,6 +193,14 @@ class Api {
 		});
 	};
 
+	setVimMode (win, vimMode) {
+		ConfigManager.set({ vimMode: vimMode}, (err) => {
+			WindowManager.reloadAll();
+			MenuManager.initMenu();
+			MenuManager.initTray();
+		});
+	};
+
 	setSpellingLang (win, languages) {
 		languages = languages || [];
 

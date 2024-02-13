@@ -33,7 +33,7 @@ class Analytics {
 			return;
 		};
 
-		const { config, interfaceLang } = commonStore;
+		const { config, interfaceLang, vimMode } = commonStore;
 		const platform = UtilCommon.getPlatform();
 
 		let version = String(UtilCommon.getElectron().version.app || '').split('-');
@@ -68,6 +68,7 @@ class Analytics {
 			platform,
 			osVersion: UtilCommon.getElectron().version.os,
 			interfaceLang,
+			vimMode
 		});
 
 		this.removeContext();

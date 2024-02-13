@@ -1,16 +1,36 @@
 import * as React from 'react';
 import $ from 'jquery';
 import raf from 'raf';
-import { observer } from 'mobx-react';
-import { throttle } from 'lodash';
-import { Icon, Loader, Deleted, DropTarget } from 'Component';
-import { commonStore, blockStore, detailStore, menuStore, popupStore } from 'Store';
-import { I, C, Key, UtilCommon, UtilData, UtilObject, UtilEmbed, Preview, Mark, focus, keyboard, Storage, UtilRouter, Action, translate, analytics, Renderer, sidebar } from 'Lib';
+import {observer} from 'mobx-react';
+import {throttle} from 'lodash';
+import {Deleted, DropTarget, Icon, Loader} from 'Component';
+import {blockStore, commonStore, detailStore, menuStore, popupStore} from 'Store';
+import {
+	Action,
+	analytics,
+	C,
+	focus,
+	I,
+	Key,
+	keyboard,
+	Mark,
+	Preview,
+	Renderer,
+	sidebar,
+	Storage,
+	translate,
+	UtilCommon,
+	UtilData,
+	UtilEmbed,
+	UtilObject,
+	UtilRouter
+} from 'Lib';
 import Controls from 'Component/page/elements/head/controls';
 import PageHeadEditor from 'Component/page/elements/head/editor';
 import Children from 'Component/page/elements/children';
 import Constant from 'json/constant.json';
 import Errors from 'json/error.json';
+import {VimModes} from 'Lib/keyboard';
 
 interface Props extends I.PageComponent {
 	onOpen?(): void;
@@ -527,7 +547,12 @@ const EditorPage = observer(class EditorPage extends React.Component<Props, Stat
 		const root = blockStore.getLeaf(rootId, rootId);
 
 		if (keyboard.isFocused || !selection || !root) {
-			return;
+			if (commonStore.vimModeIsOn && keyboard.currentVimMode === VimModes.Insert) {
+				console.log('Vim Mode: ', keyboard.currentVimMode);
+				return;
+			} else if (!commonStore.vimModeIsOn) {
+				return;
+			}
 		};
 
 		Preview.previewHide(true);
@@ -537,36 +562,131 @@ const EditorPage = observer(class EditorPage extends React.Component<Props, Stat
 		const readonly = this.isReadonly();
 		const styleParam = this.getStyleParam();
 
-		// Select all
-		keyboard.shortcut(`${cmd}+a`, e, (pressed: string) => {
-			if (popupOpen || menuOpen) {
-				return;
-			};
+		let useNormalShortcuts = true;
 
-			e.preventDefault();
-			this.onSelectAll();
-		});
+		if (commonStore.vimModeIsOn) {
+			console.log('Vim Mode: ', keyboard.currentVimMode, 'useShortcuts: ', useNormalShortcuts);
+			if (keyboard.currentVimMode === VimModes.Insert) {
+				useNormalShortcuts = true;
+			} else if (keyboard.currentVimMode === VimModes.Visual || keyboard.currentVimMode === VimModes.Normal){
+				useNormalShortcuts = false;
+			}
+			console.log('Updated? Vim Mode: ', keyboard.currentVimMode, 'useShortcuts: ', useNormalShortcuts);
+		}
 
-		// Copy/Cut
-		keyboard.shortcut(`${cmd}+c, ${cmd}+x`, e, (pressed: string) => {
-			this.onCopy(e, pressed.match('x') ? true : false);
-		});
+		if (!useNormalShortcuts) {
+			keyboard.shortcut('i', e, () => {
+				keyboard.setVimMode(VimModes.Insert);
+			});
 
-		// Undo
-		keyboard.shortcut(`${cmd}+z`, e, () => {
-			if (!readonly) {
+			keyboard.shortcut('v', e, () => {
+				keyboard.setVimMode(VimModes.Visual);
+			});
+
+			keyboard.shortcut('esc', e, () => {
+				keyboard.setVimMode(VimModes.Normal);
+			});
+
+			console.log('Current vim mode: ', keyboard.currentVimMode);
+
+
+
+		/*	if (keyboard.currentVimMode === VimModes.Normal) {
+				// Undo
+				keyboard.shortcut(`${cmd}+z`, e, () => {
+					if (!readonly) {
+						e.preventDefault();
+						keyboard.onUndo(rootId, 'editor');
+					}
+					;
+				});
+			}
+			keyboard.shortcut('escape', e, () => {
+				if (keyboard.currentVimMode !== VimModes.Normal && keyboard.isValidVimMode()) {
+					keyboard.setVimMode(VimModes.Normal);
+					selection.clear();
+					focus.set(block.id, range);
+					focus.apply();
+				}
+			});
+
+			if (keyboard.currentVimMode === VimModes.Normal) {
+				keyboard.handleVimKey(e);
+				console.log('vim mode', keyboard.currentVimMode);
+
+				// Vim mode
+				keyboard.shortcut('i', e, (pressed: string) => {
+					console.log('INSERT MODE ENABLED', pressed);
+					keyboard.setVimMode(VimModes.Insert);
+				})
+
+				keyboard.shortcut('v', e, (pressed: string) => {
+					console.log('VISUAL MODE ENABLED', pressed);
+					keyboard.setVimMode(VimModes.Visual);
+				})
+
+				keyboard.shortcut('j', e, (pressed: string) => {
+					console.log('down ', pressed);
+					this.onArrowVertical(e, Key.down, range, length, props);
+				})
+			} else if (keyboard.currentVimMode === VimModes.Visual) {
+				// Insert mode
+				keyboard.shortcut('j, k', e, (pressed: string) => {
+					if (pressed === 'j') {
+						console.log('down ', pressed);
+						this.onShiftArrowBlock(e, range, length, 'shift+arrowdown');
+					}
+					if (pressed === 'k') {
+						console.log('down ', pressed);
+						this.onShiftArrowBlock(e, range, length, 'shift+arrowup');
+					}
+				})
+			}
+
+			// Normal mode
+			keyboard.shortcut('escape', e, (pressed: string) => {
+				if (keyboard.currentVimMode !== VimModes.Normal) {
+					console.log('NORMAL MODE ENABLED', pressed);
+					keyboard.setVimMode(VimModes.Normal);
+				}
+			})*/
+		}
+
+		if(!commonStore.vimModeIsOn || useNormalShortcuts){
+			// Select all
+			keyboard.shortcut(`${cmd}+a`, e, (pressed: string) => {
+				if (popupOpen || menuOpen) {
+					return;
+				}
+				;
+
 				e.preventDefault();
-				keyboard.onUndo(rootId, 'editor');
-			};
-		});
+				this.onSelectAll();
+			});
 
-		// Redo
-		keyboard.shortcut(`${cmd}+shift+z, ${cmd}+y`, e, () => {
-			if (readonly) {
-				e.preventDefault();
-				keyboard.onRedo(rootId, 'editor');
-			};
-		});
+			// Copy/Cut
+			keyboard.shortcut(`${cmd}+c, ${cmd}+x`, e, (pressed: string) => {
+				this.onCopy(e, pressed.match('x') ? true : false);
+			});
+
+			// Undo
+			keyboard.shortcut(`${cmd}+z`, e, () => {
+				if (!readonly) {
+					e.preventDefault();
+					keyboard.onUndo(rootId, 'editor');
+				}
+				;
+			});
+
+			// Redo
+			keyboard.shortcut(`${cmd}+shift+z, ${cmd}+y`, e, () => {
+				if (readonly) {
+					e.preventDefault();
+					keyboard.onRedo(rootId, 'editor');
+				}
+				;
+			});
+		}
 
 		// History
 		keyboard.shortcut('ctrl+h, cmd+y', e, (pressed: string) => {
@@ -721,7 +841,12 @@ const EditorPage = observer(class EditorPage extends React.Component<Props, Stat
 		const block = blockStore.getLeaf(rootId, focused);
 
 		if (!block) {
-			return;
+			if (commonStore.vimModeIsOn && keyboard.currentVimMode === VimModes.Insert) {
+				console.log('Vim Mode: ', keyboard.currentVimMode);
+				return;
+			} else {
+				return;
+			}
 		};
 
 		const readonly = this.isReadonly();
@@ -735,7 +860,7 @@ const EditorPage = observer(class EditorPage extends React.Component<Props, Stat
 		};
 
 		Preview.previewHide(true);
-		
+
 		if (UtilCommon.isPlatformMac()) {
 			// Print or prev string
 			keyboard.shortcut('ctrl+p', e, (pressed: string) => {
@@ -747,6 +872,32 @@ const EditorPage = observer(class EditorPage extends React.Component<Props, Stat
 				this.onArrowVertical(e, Key.down, range, length, props);
 			});
 		};
+		let useNormalShortcuts = true;
+
+		if (commonStore.vimModeIsOn) {
+			console.log('Vim Mode: ', keyboard.currentVimMode, 'useShortcuts: ', useNormalShortcuts);
+			if (keyboard.currentVimMode === VimModes.Insert) {
+				useNormalShortcuts = true;
+			} else if (keyboard.currentVimMode === VimModes.Visual || keyboard.currentVimMode === VimModes.Normal){
+				useNormalShortcuts = false;
+			}
+			console.log('Updated? Vim Mode: ', keyboard.currentVimMode, 'useShortcuts: ', useNormalShortcuts);
+		}
+
+		if (!useNormalShortcuts) {
+			console.log('Current vim mode: ', keyboard.currentVimMode);
+			keyboard.shortcut('i', e, () => {
+				keyboard.setVimMode(VimModes.Insert);
+			});
+
+			keyboard.shortcut('v', e, () => {
+				keyboard.setVimMode(VimModes.Visual);
+			});
+
+			keyboard.shortcut('esc', e, () => {
+				keyboard.setVimMode(VimModes.Normal);
+			});
+		}
 
 		if (block.isText()) {
 

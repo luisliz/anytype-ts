@@ -38,7 +38,8 @@
 		"cover": "sky",
 		"codeLang": "javascript",
 		"pinTime": 600,
-		"typeKey": "ot-note"
+		"typeKey": "ot-note",
+		"vimMode": true
 	},
 	
 	"delay": {

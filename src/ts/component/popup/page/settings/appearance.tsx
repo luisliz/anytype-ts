@@ -11,8 +11,9 @@ const PopupSettingsPageAppearance = observer(class PopupSettingsPageAppearance e
 		const { hideTray, hideMenuBar } = config;
 		const canHideMenu = UtilCommon.isPlatformWindows() || UtilCommon.isPlatformLinux();
 		const themes: any[] = [
-			{ id: '', class: 'light', name: translate('popupSettingsAppearanceColorModeButtonLight') },
-			{ id: 'dark', class: 'dark', name: translate('popupSettingsAppearanceColorModeButtonDark') },
+			// LUIS REPLACE BACK WITH LIGHT DEF
+			{ id: '', class: 'dark', name: translate('popupSettingsAppearanceColorModeButtonDark') },
+			{ id: 'light', class: 'light', name: translate('popupSettingsAppearanceColorModeButtonLight') },
 			{ id: 'system', class: 'system', name: translate('popupSettingsAppearanceColorModeButtonSystem') },
 		];
 

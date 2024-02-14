@@ -52,7 +52,6 @@ class CommonStore {
 	public isSidebarFixedValue = null;
 	public showRelativeDatesValue = null;
 	public fullscreenObjectValue = null;
-	public vimModeIsOn = null;
 
 	public previewObj: I.Preview = { 
 		type: null, 
@@ -97,7 +96,6 @@ class CommonStore {
 			fullscreenObjectValue: observable,
 			spaceId: observable,
 			techSpaceId: observable,
-			vimModeIsOn: observable,
             config: computed,
             progress: computed,
             preview: computed,
@@ -122,7 +120,6 @@ class CommonStore {
 			spaceSet: action,
 			techSpaceSet: action,
 			spaceStorageSet: action,
-			vimModeSet: action,
 		});
 
 		intercept(this.configObj as any, change => UtilCommon.intercept(this.configObj, change));
@@ -182,10 +179,6 @@ class CommonStore {
 
 	get fullscreenObject(): boolean {
 		return this.boolGet('fullscreenObject');
-	};
-
-	get vimObject(): boolean {
-		return this.boolGet('vimObject');
 	};
 
 	get theme(): string {
@@ -413,10 +406,6 @@ class CommonStore {
 		this.nativeThemeIsDark = isDark;
 	};
 
-	vimModeSet (isVimOn: boolean) {
-		this.vimModeIsOn = isVimOn;
-	};
-
 	languagesSet (v: string[]) {
 		this.languages = v;
 	};
@@ -433,6 +422,7 @@ class CommonStore {
 					newConfig[k] = config[k];
 				};
 			};
+			console.log('newConfig', newConfig);
 		};
 
 		set(this.configObj, newConfig);

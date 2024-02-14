@@ -8,6 +8,7 @@ import { I, keyboard, Preview, sidebar, translate } from 'Lib';
 import { commonStore } from 'Store';
 import ListWidget from 'Component/list/widget';
 import Constant from 'json/constant.json';
+import {keybindingStore} from 'Store/keybinding';
 
 interface Props {
 	dataset?: any;
@@ -51,7 +52,7 @@ const Sidebar = observer(class Sidebar extends React.Component<Props> {
             >
 				<div className="inner">
 					<div className="head" draggable={true} onDragStart={this.onDragStart}>
-						{commonStore.vimModeIsOn &&
+						{keybindingStore.vimMode &&
 							<Icon
 								className="vim"
 								tooltip={translate('vimMode')}

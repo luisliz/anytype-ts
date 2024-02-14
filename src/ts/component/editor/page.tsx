@@ -31,6 +31,7 @@ import Children from 'Component/page/elements/children';
 import Constant from 'json/constant.json';
 import Errors from 'json/error.json';
 import {VimModes} from 'Lib/keyboard';
+import {keybindingStore} from 'Store/keybinding';
 
 interface Props extends I.PageComponent {
 	onOpen?(): void;
@@ -547,10 +548,10 @@ const EditorPage = observer(class EditorPage extends React.Component<Props, Stat
 		const root = blockStore.getLeaf(rootId, rootId);
 
 		if (keyboard.isFocused || !selection || !root) {
-			if (commonStore.vimModeIsOn && keyboard.currentVimMode === VimModes.Insert) {
+			if (keybindingStore.vimMode && keyboard.currentVimMode === VimModes.Insert) {
 				console.log('Vim Mode: ', keyboard.currentVimMode);
 				return;
-			} else if (!commonStore.vimModeIsOn) {
+			} else if (!keybindingStore.vimMode) {
 				return;
 			}
 		};
@@ -564,7 +565,7 @@ const EditorPage = observer(class EditorPage extends React.Component<Props, Stat
 
 		let useNormalShortcuts = true;
 
-		if (commonStore.vimModeIsOn) {
+		if (keybindingStore.vimMode) {
 			console.log('Vim Mode: ', keyboard.currentVimMode, 'useShortcuts: ', useNormalShortcuts);
 			if (keyboard.currentVimMode === VimModes.Insert) {
 				useNormalShortcuts = true;
@@ -652,7 +653,7 @@ const EditorPage = observer(class EditorPage extends React.Component<Props, Stat
 			})*/
 		}
 
-		if(!commonStore.vimModeIsOn || useNormalShortcuts){
+		if(!keybindingStore.vimMode || useNormalShortcuts){
 			// Select all
 			keyboard.shortcut(`${cmd}+a`, e, (pressed: string) => {
 				if (popupOpen || menuOpen) {
@@ -841,7 +842,7 @@ const EditorPage = observer(class EditorPage extends React.Component<Props, Stat
 		const block = blockStore.getLeaf(rootId, focused);
 
 		if (!block) {
-			if (commonStore.vimModeIsOn && keyboard.currentVimMode === VimModes.Insert) {
+			if (keybindingStore.vimMode && keyboard.currentVimMode === VimModes.Insert) {
 				console.log('Vim Mode: ', keyboard.currentVimMode);
 				return;
 			} else {
@@ -874,7 +875,7 @@ const EditorPage = observer(class EditorPage extends React.Component<Props, Stat
 		};
 		let useNormalShortcuts = true;
 
-		if (commonStore.vimModeIsOn) {
+		if (keybindingStore.vimMode) {
 			console.log('Vim Mode: ', keyboard.currentVimMode, 'useShortcuts: ', useNormalShortcuts);
 			if (keyboard.currentVimMode === VimModes.Insert) {
 				useNormalShortcuts = true;

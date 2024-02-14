@@ -4,11 +4,12 @@ import {I, UtilDate, Storage, translate, analytics, Action} from 'Lib';
 import {commonStore} from 'Store';
 import {observer} from 'mobx-react';
 import Shortcut from 'Component/popup/shortcut';
+import {keybindingStore} from 'Store/keybinding';
 
 const PopupSettingsPageKeybindingIndex = observer(class PopupSettingsPageKeybindingIndex extends React.Component<I.PopupSettings> {
 
     render() {
-        const {vimMode} = commonStore;
+        const {vimMode} = keybindingStore;
 
         return (
             <React.Fragment>
@@ -18,7 +19,7 @@ const PopupSettingsPageKeybindingIndex = observer(class PopupSettingsPageKeybind
                     <div className="item">
                         <Label text={translate('popupSettingsKeyBindingVimMode')}/>
                         <Switch className="big" value={vimMode}
-                                onChange={v => Action.setVimMode(v)}/>
+                                onChange={v => keybindingStore.vimModeSet(v)}/>
                     </div>
                 </div>
             </React.Fragment>

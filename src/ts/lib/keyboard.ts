@@ -20,6 +20,7 @@ import {commonStore, authStore, blockStore, detailStore, menuStore, popupStore} 
 import Constant from 'json/constant.json';
 import Url from 'json/url.json';
 import KeyCode from 'json/key.json';
+import {keybindingStore} from 'Store/keybinding';
 
 class Keyboard {
 
@@ -1022,7 +1023,7 @@ class Keyboard {
 
     isValidVimMode() {
         const isValidVimMode = Object.values(VimModes).includes(this.currentVimMode as VimModes);
-        return commonStore.vimModeIsOn && isValidVimMode;
+        return keybindingStore.vimMode && isValidVimMode;
     }
 
     setFocus(v: boolean) {

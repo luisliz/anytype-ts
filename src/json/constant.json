@@ -274,6 +274,9 @@
 		"12": 31
 	},
 
+	"defaultKeybinds": {
+	},
+
 	"codeLang": {
 		"abap":			 "ABAP",
 		"arduino":		 "Arduino",

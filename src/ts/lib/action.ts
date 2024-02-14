@@ -4,7 +4,6 @@ import Constant from 'json/constant.json';
 import common from 'Lib/util/common';
 
 class Action {
-
 	pageClose (rootId: string, close: boolean) {
 		const { root, widgets } = blockStore;
 		const { space } = commonStore;
@@ -583,11 +582,6 @@ class Action {
 		analytics.event('SwitchInterfaceLanguage', { type: id });
 	};
 
-	setVimMode(v: boolean) {
-		commonStore.vimModeSet(v);
-		analytics.event('SwitchVimMode', { type: v });
-	};
-
 	setSpellingLang (id: string) {
 		Renderer.send('setSpellingLang', id);
 		analytics.event('AddSpellcheckLanguage', { type: id });
@@ -638,7 +632,6 @@ class Action {
 			analytics.event('AddWidget', { type: layout });
 		});
 	};
-
 };
 
 export default new Action();
